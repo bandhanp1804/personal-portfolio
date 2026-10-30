@@ -123,16 +123,16 @@ export const projects = [
   {
     id: "lets-go-gaffer",
     title: "Let's Go Gaffer",
-    subtitle: "AI Fantasy Premier League Assistant · Go + RAG on Kubernetes · live, solo build",
-    badge: "Live · letsgogaffer.tech",
+    subtitle: "Set out to learn Go · ended up shipping a live AI assistant for Fantasy Premier League",
+    badge: "Learning Project · Live",
     badgeColor: "#f5c542",
     caseStudy: {
       situation:
-        "Fantasy Premier League managers make weekly calls — lineup, captain, transfers — from scattered stats and team news. LLM chat assistants sound confident on exactly these questions, but they get the arithmetic and FPL's squad rules wrong, and you can't tell when.",
+        "I wanted to learn Go properly — not tutorials, but the way it is used in production: the standard library first, contexts on every call, small interfaces, wrapped errors, table-driven tests and goroutines that always shut down. I needed a problem big enough to force all of that, so I picked one I care about every week: my Fantasy Premier League team.",
       challenge:
-        "Build an assistant people can trust with real decisions: every number explainable, news current within half an hour, and the whole thing run as a public production service on a student cloud budget — open sign-in, per-user data, cost limits and observability included.",
+        "A toy would not teach me much, so I held it to production standards. LLM assistants sound confident about lineups and transfers but get the arithmetic and FPL's rules wrong, so mine had to be trustworthy: every number computed and explainable. Then it had to run as a real public service — sign-in, per-user data, cost limits, monitoring — on a student cloud budget.",
       solution:
-        "One rule shapes the design: the LLM never does maths or checks rules. A Go service computes expected points with a backtested model, picks lineups and weighs transfers in plain code, and exposes them as tools; Claude only narrates the results and retrieves news, and its answers are checked against the tools' numbers. Temporal runs the background work, and it ships on AKS through Terraform, Helm and GitHub Actions with a preview environment per pull request.",
+        "Each stage taught one part of Go: the FPL API client (net/http, retries, rate limiting), the expected-points model and lineup optimizer (pure functions under table-driven tests), news ingestion into Postgres and pgvector (pgx, worker pools), Claude tool calling (streaming, encoding/json), then Temporal workflows (concurrency with clean shutdown). One rule held throughout: the LLM never does maths or checks rules — Go does, and Claude only narrates the results. What started as a Go exercise now runs live on Azure Kubernetes, deployed by Terraform and GitHub Actions and monitored in Datadog.",
     },
     metrics: [
       { value: "0.516", label: "Rank correlation vs 0.400 baseline (backtest)" },
