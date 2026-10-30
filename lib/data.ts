@@ -41,6 +41,7 @@ export const skills = [
       "Argo CD",
       "Argo Workflows",
       "GitHub Actions",
+      "Temporal",
       "Ansible",
     ],
   },
@@ -58,6 +59,7 @@ export const skills = [
     category: "Observability & SRE",
     items: [
       "Datadog",
+      "OpenTelemetry",
       "Prometheus",
       "Grafana",
       "VictoriaMetrics",
@@ -68,7 +70,7 @@ export const skills = [
   },
   {
     category: "Languages",
-    items: ["Python", "Java", "TypeScript / Node.js", "Bash", "PowerShell", "SQL", "HCL"],
+    items: ["Python", "Go", "Java", "TypeScript / Node.js", "Bash", "PowerShell", "SQL", "HCL"],
   },
   {
     category: "AI & Agents",
@@ -78,6 +80,8 @@ export const skills = [
       "LLM tool calling",
       "Claude Code skills",
       "Human-in-the-loop approval",
+      "RAG (pgvector, embeddings)",
+      "LLM evals",
     ],
   },
 ];
@@ -115,6 +119,52 @@ export const projects = [
     github: "https://github.com/Hellblazer1804/faas-spot",
     paper: true,
     thesis: "https://www.proquest.com/dissertations-theses/fault-tolerant-cost-efficient-serverless-workflow/docview/3382275335/se-2?accountid=14537",
+  },
+  {
+    id: "lets-go-gaffer",
+    title: "Let's Go Gaffer",
+    subtitle: "AI Fantasy Premier League Assistant · Go + RAG on Kubernetes · live, solo build",
+    badge: "Live · letsgogaffer.tech",
+    badgeColor: "#f5c542",
+    caseStudy: {
+      situation:
+        "Fantasy Premier League managers make weekly calls — lineup, captain, transfers — from scattered stats and team news. LLM chat assistants sound confident on exactly these questions, but they get the arithmetic and FPL's squad rules wrong, and you can't tell when.",
+      challenge:
+        "Build an assistant people can trust with real decisions: every number explainable, news current within half an hour, and the whole thing run as a public production service on a student cloud budget — open sign-in, per-user data, cost limits and observability included.",
+      solution:
+        "One rule shapes the design: the LLM never does maths or checks rules. A Go service computes expected points with a backtested model, picks lineups and weighs transfers in plain code, and exposes them as tools; Claude only narrates the results and retrieves news, and its answers are checked against the tools' numbers. Temporal runs the background work, and it ships on AKS through Terraform, Helm and GitHub Actions with a preview environment per pull request.",
+    },
+    metrics: [
+      { value: "0.516", label: "Rank correlation vs 0.400 baseline (backtest)" },
+      { value: "22/22", label: "Assistant eval cases passing" },
+      { value: "0.20 s", label: "API p95 latency (Datadog APM)" },
+      { value: "6/6", label: "Gameweeks the model beat recent form" },
+    ],
+    highlights: [
+      "Expected-points model backtested on gameweeks it never saw: rank correlation 0.516 vs 0.400 for a season-average baseline and 0.343 for recent form, with lower error (MAE 1.89 vs 2.08)",
+      "LLM never does maths or rule checks — Claude calls Go tools for lineups, transfers and chips, and grounding checks flag any number, citation or club the tools didn't return",
+      "RAG over team news from BBC, Sky, the Guardian and more: Voyage embeddings in Postgres + pgvector, refreshed every 30 minutes by Temporal workflows",
+      "Temporal workflows for scheduled news, per-player watch alerts to each user's inbox, a gameweek briefing and a nightly eval of the assistant",
+      "Terraform on Azure (AKS with autoscaling, managed Postgres, DNS); sign-in through Dex with GitHub, Google or Microsoft, per-user daily limits, and AES-256-GCM-encrypted user settings",
+      "GitHub Actions with OIDC (no stored cloud keys), a Terraform plan on every PR, and an isolated preview environment per pull request that is torn down on merge",
+      "OpenTelemetry traces and metrics into Datadog with logs tied to traces; dashboards, monitors and a 99% availability SLO kept as code",
+    ],
+    stack: [
+      "Go",
+      "PostgreSQL + pgvector",
+      "Claude API",
+      "Temporal",
+      "Kubernetes (AKS)",
+      "Terraform",
+      "Helm",
+      "Next.js",
+      "GitHub Actions",
+      "OpenTelemetry",
+      "Datadog",
+    ],
+    github: "https://github.com/bandhanp1804/lets-go-gaffer",
+    live: "https://letsgogaffer.tech",
+    paper: false,
   },
   {
     id: "multi-agent",

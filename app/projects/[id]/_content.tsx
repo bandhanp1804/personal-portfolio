@@ -144,6 +144,19 @@ export default function ProjectContent({ id }: { id: string }) {
               GITHUB ↗
             </a>
           )}
+          {"live" in project && project.live && (
+            <a
+              href={project.live as string}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-xs tracking-widest uppercase transition-colors duration-150"
+              style={{ color: "#00aa44", textDecoration: "none" }}
+              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+            >
+              LIVE SITE ↗
+            </a>
+          )}
           {"thesis" in project && project.thesis && (
             <a
               href={project.thesis as string}
